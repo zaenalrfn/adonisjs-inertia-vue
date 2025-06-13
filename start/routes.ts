@@ -11,6 +11,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 const RegisterContollersController = () => import('#controllers/Auth/register_contollers_controller')
 const AuthController = () => import('#controllers/Auth/auth_controller')
+const DashboardUsersController = () => import('#controllers/User/dashboard_users_controller')
 router.on('/').renderInertia('home')
 
 router
@@ -22,3 +23,9 @@ router
   })
   .prefix('/auth')
   .use(middleware.guest())
+
+
+router.group(() => {
+  router.get('/user/dashboard', [DashboardUsersController, 'index']).as('dashboard.users.index')
+})
+.use(middleware.auth())
